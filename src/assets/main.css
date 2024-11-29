@@ -1,0 +1,11 @@
+@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  font-weight: normal;
+  width: 100%;
+  min-height: 100dvh;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
