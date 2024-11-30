@@ -18,6 +18,11 @@ const result = ref({
   total: 0,
   repayment: 0,
   origin: 0,
+  reset() {
+    this.total = 0
+    this.repayment = 0
+    this.origin = 0
+  },
 })
 const focusElement = ref<'amount' | 'rate' | 'term' | null>()
 const option = ref<{
@@ -35,20 +40,12 @@ const option = ref<{
   term: null,
   rate: null,
   optionAreOk() {
-    if (
-      (this.replay || this.interest) &&
-      !this.amount &&
-      this.amount !== null &&
-      !isNaN(this.amount) &&
-      !this.term &&
-      this.term !== null &&
-      !isNaN(this.term) &&
-      !this.rate &&
-      this.rate !== null &&
-      !isNaN(this.rate)
-    )
+    console.log(this.term)
+    if((this.replay || this.interest) && this.amount && this.term && this.rate){
       return true
-    else return false
+    }else {
+      return false
+    }
   },
   reset() {
     this.term = null
@@ -56,6 +53,7 @@ const option = ref<{
     this.replay = false
     this.interest = false
     this.amount = null
+    result.value.reset()
   },
 })
 
@@ -69,6 +67,7 @@ function setFocus(element: 'amount' | 'rate' | 'term' | null) {
 function calculate() {
   error.value.setAllFalse()
   if (option.value.optionAreOk()) {
+    console.log('tout est ok')
     const rateValue = option.value.rate! / 100
     const rateMonthly = rateValue / 12
     const numberOfMonth = option.value.term! * 12
@@ -79,10 +78,12 @@ function calculate() {
     result.value.total = MonthlyValue * 12 * option.value.term!
     result.value.origin = option.value.amount!
   } else {
-    if (option.value.amount === null || isNaN(option!.value.amount)) error.value.amount = true
-    if (option.value.rate === null || isNaN(option!.value.rate)) error.value.rate = true
-    if (option.value.term === null || isNaN(option!.value.term)) error.value.term = true
+    console.log('il y a une erreur')
+    if (option.value.amount === null ||option.value.amount=== '' as unknown as number  || isNaN(option!.value.amount)) error.value.amount = true
+    if (option.value.rate === null || option.value.rate=== '' as unknown as number|| isNaN(option!.value.rate)) error.value.rate = true
+    if (option.value.term === null ||option.value.term==='' as unknown as number || isNaN(option!.value.term)) error.value.term = true
     if (!option.value.interest && !option.value.replay) error.value.type = true
+    result.value.reset()
   }
 }
 </script>
